@@ -1,15 +1,5 @@
-const Delivery = require('../models/Delivery');
-exports.getMyDeliveries = async (req, res) => {
-  try {
-    console.log('Fetching deliveries for user:', req.params.userId);
-    const deliveries = await Delivery.find({ customer_id: req.params.userId });
-    console.log('Deliveries found:', deliveries);
-    res.json({ deliveries });
-  } catch (error) {
-    console.error('Error fetching deliveries:', error);
-    res.status(500).json({ message: 'Server error' });
-  }
-};
+const Delivery = require('./Delivery');
+const User = require('./User');
 const createDelivery = async (req, res) => {
   const { pickup_location, pickup_contact, pickup_phone, pickup_instructions, dropoff_location, dropoff_contact, dropoff_phone, dropoff_instructions, package_type, package_weight, package_dimensions, package_description } = req.body;
   try {
@@ -51,7 +41,7 @@ const chooseExpeditor = async (req, res) => {
 
 const getMyDeliveries = async (req, res) => {
   try {
-    const deliveries = await Delivery.find({ customer_id: req.params.userId }).populate('expeditor_id', 'name phone');
+    const deliveries = await Delivery.find({ customer_id: req.user._id }).populate('expeditor_id', 'name phone');
     res.json({ deliveries });
   } catch (err) {
     res.status(500).json({ message: 'Server error' });

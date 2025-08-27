@@ -1,6 +1,6 @@
 const express = require('express');
-const { updateProfile } = require('../controllers/userController');
-const { protect, authorize } = require('../middleware/authMiddleware');
+const { updateProfile } = require('./userController');
+const { protect, authorize } = require('./authMiddleware');
 const router = express.Router();
 
 router.post('/profile', protect, authorize(['expeditor']), updateProfile);

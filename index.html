@@ -1043,7 +1043,7 @@ async function loadCustomerDeliveries() {
   }
   try {
     console.log('Fetching deliveries for user ID:', currentUser.id);
-    const response = await makeApiRequest(`/api/my-deliveries/${currentUser.id}`, 'GET');
+    const response = await makeApiRequest(`/api/my-deliveries`, 'GET');
     console.log('API response:', response);
     const deliveriesContainer = document.getElementById('customer-deliveries');
     if (!deliveriesContainer) {
@@ -1148,7 +1148,7 @@ async function loadCustomerDeliveries() {
         
         async function loadExpeditorRequests() {
             try {
-                const response = await makeApiRequest(`/api/requests/${currentUser.id}`, 'GET');
+                const response = await makeApiRequest(`/api/requests`, 'GET');
                 const requestsContainer = document.getElementById('expeditor-requests-list') || 
                                          document.getElementById('expeditor-requests');
                 
