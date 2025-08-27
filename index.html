@@ -1,0 +1,1421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ghost-Riders Expediting </title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Custom styles that can't be done with Tailwind */
+        .gradient-bg {
+            background: linear-gradient(135deg, #6b21a8 0%, #1e40af 100%);
+        }
+        .delivery-status {
+            position: relative;
+        }
+        .delivery-status::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 16px;
+            height: 100%;
+            width: 2px;
+            background-color: #e5e7eb;
+        }
+        .status-complete {
+            color: #10b981;
+        }
+        .status-active {
+            color: #3b82f6;
+            font-weight: bold;
+        }
+        .status-pending {
+            color: #6b7280;
+        }
+        .map-placeholder {
+            background-color: #e5e7eb;
+            background-image: 
+                linear-gradient(#64748b 1px, transparent 1px),
+                linear-gradient(90deg, #64748b 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gray-50">
+    <!-- Navigation -->
+    <nav class="gradient-bg text-white shadow-lg">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fas fa-ghost text-2xl"></i>
+                <span class="text-xl font-bold">Ghost-Riders Expediting</span>
+            </div>
+            <div id="nav-links" class="hidden md:flex space-x-6">
+                <a href="#" class="hover:text-purple-200" onclick="showPage('home')">Home</a>
+                <a href="#" class="hover:text-purple-200" onclick="showPage('login')">Login</a>
+                <a href="#" class="hover:text-purple-200" onclick="showPage('register')">Register</a>
+            </div>
+            <div id="user-nav" class="hidden">
+                <div class="flex items-center space-x-4">
+                    <span id="username-display" class="font-medium"></span>
+                    <button onclick="logout()" class="bg-white text-purple-800 px-3 py-1 rounded-md hover:bg-purple-100 transition">Logout</button>
+                </div>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden text-white focus:outline-none">
+                <i class="fas fa-bars text-2xl"></i>
+            </button>
+        </div>
+        <div id="mobile-menu" class="hidden md:hidden bg-purple-900 px-4 py-2">
+            <div class="flex flex-col space-y-2">
+                <a href="#" class="text-white hover:bg-purple-800 px-3 py-2 rounded" onclick="showPage('home')">Home</a>
+                <a href="#" class="text-white hover:bg-purple-800 px-3 py-2 rounded" onclick="showPage('login')">Login</a>
+                <a href="#" class="text-white hover:bg-purple-800 px-3 py-2 rounded" onclick="showPage('register')">Register</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="container mx-auto px-4 py-8">
+        <!-- Home Page -->
+        <div id="home-page" class="page">
+            <div class="text-center mb-12">
+                <h1 class="text-4xl font-bold text-gray-800 mb-4">Fast, Reliable Expedited Shipping</h1>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    Ghost-Riders Expediting connects customers with professional expeditors for time-sensitive deliveries.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8 mb-12">
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition">
+                    <div class="text-purple-600 mb-4">
+                        <i class="fas fa-shipping-fast text-4xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Quick Delivery</h3>
+                    <p class="text-gray-600">Get your items delivered fast with our network of professional expeditors.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition">
+                    <div class="text-purple-600 mb-4">
+                        <i class="fas fa-map-marked-alt text-4xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Real-Time Tracking</h3>
+                    <p class="text-gray-600">Track your delivery in real-time from pickup to drop-off.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition">
+                    <div class="text-purple-600 mb-4">
+                        <i class="fas fa-user-shield text-4xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Verified Expeditor</h3>
+                    <p class="text-gray-600">All our expeditors are verified professionals with proper credentials.</p>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                <div class="md:flex">
+                    <div class="md:w-1/2 p-8">
+                        <h2 class="text-2xl font-bold text-gray-800 mb-4">Ready to ship?</h2>
+                        <p class="text-gray-600 mb-6">Create an account and get started with your first expedited delivery today.</p>
+                        <div class="flex space-x-4">
+                            <button onclick="showPage('register')" class="bg-purple-600 text-white px-6 py-2 rounded-md hover:bg-purple-700 transition">Register</button>
+                            <button onclick="showPage('login')" class="border border-purple-600 text-purple-600 px-6 py-2 rounded-md hover:bg-purple-50 transition">Login</button>
+                        </div>
+                    </div>
+                    <div class="md:w-1/2 bg-purple-50 p-8 flex items-center justify-center">
+                        <img src="https://cdn-icons-png.flaticon.com/512/2454/2454273.png" alt="Delivery illustration" class="w-64 h-64 object-contain">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Register Page -->
+        <div id="register-page" class="page hidden">
+            <div class="max-w-md mx-auto bg-white rounded-lg shadow-md overflow-hidden">
+                <div class="gradient-bg py-4 px-6">
+                    <h2 class="text-2xl font-bold text-white">Create an Account</h2>
+                </div>
+                <div class="p-6">
+                    <form id="register-form">
+                        <div class="mb-4">
+                            <label for="register-name" class="block text-gray-700 font-medium mb-2">Full Name</label>
+                            <input type="text" id="register-name" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500" required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="register-email" class="block text-gray-700 font-medium mb-2">Email</label>
+                            <input type="email" id="register-email" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500" required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="register-phone" class="block text-gray-700 font-medium mb-2">Phone Number</label>
+                            <input type="tel" id="register-phone" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500" required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="register-password" class="block text-gray-700 font-medium mb-2">Password</label>
+                            <input type="password" id="register-password" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500" required>
+                        </div>
+                        <div class="mb-6">
+                            <label class="block text-gray-700 font-medium mb-2">Account Type</label>
+                            <div class="flex space-x-4">
+                                <label class="inline-flex items-center">
+                                    <input type="radio" name="register-role" value="customer" class="text-purple-600" checked>
+                                    <span class="ml-2">Customer</span>
+                                </label>
+                                <label class="inline-flex items-center">
+                                    <input type="radio" name="register-role" value="expeditor" class="text-purple-600">
+                                    <span class="ml-2">Expeditor</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div id="expeditor-fields" class="hidden mb-4">
+                            <div class="mb-4">
+                                <label for="register-vehicle" class="block text-gray-700 font-medium mb-2">Vehicle Type</label>
+                                <select id="register-vehicle" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500">
+                                    <option value="sedan">Sedan</option>
+                                    <option value="suv">SUV</option>
+                                    <option value="pickup">Pickup Truck</option>
+                                    <option value="van">Van</option>
+                                    <option value="box_truck">Box Truck</option>
+                                </select>
+                            </div>
+                            <div class="mb-4">
+                                <label for="register-license" class="block text-gray-700 font-medium mb-2">License Number</label>
+                                <input type="text" id="register-license" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500">
+                            </div>
+                            <div class="mb-4">
+                                <label for="register-service-area" class="block text-gray-700 font-medium mb-2">Service Area (ZIP codes, comma separated)</label>
+                                <input type="text" id="register-service-area" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500">
+                            </div>
+                        </div>
+                        <button type="submit" class="w-full bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-700 transition focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2">
+                            Register
+                        </button>
+                    </form>
+                    <div class="mt-4 text-center">
+                        <p class="text-gray-600">Already have an account? <a href="#" class="text-purple-600 hover:underline" onclick="showPage('login')">Login here</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Login Page -->
+        <div id="login-page" class="page hidden">
+            <div class="max-w-md mx-auto bg-white rounded-lg shadow-md overflow-hidden">
+                <div class="gradient-bg py-4 px-6">
+                    <h2 class="text-2xl font-bold text-white">Login</h2>
+                </div>
+                <div class="p-6">
+                    <form id="login-form">
+                        <div class="mb-4">
+                            <label for="login-email" class="block text-gray-700 font-medium mb-2">Email</label>
+                            <input type="email" id="login-email" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500" required>
+                        </div>
+                        <div class="mb-6">
+                            <label for="login-password" class="block text-gray-700 font-medium mb-2">Password</label>
+                            <input type="password" id="login-password" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500" required>
+                        </div>
+                        <button type="submit" class="w-full bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-700 transition focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2">
+                            Login
+                        </button>
+                    </form>
+                    <div class="mt-4 text-center">
+                        <p class="text-gray-600">Don't have an account? <a href="#" class="text-purple-600 hover:underline" onclick="showPage('register')">Register here</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Customer Dashboard -->
+        <div id="customer-dashboard" class="page hidden">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-2xl font-bold text-gray-800">Customer Dashboard</h2>
+                <button onclick="showPage('create-delivery')" class="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 transition">
+                    <i class="fas fa-plus mr-2"></i>Create Delivery
+                </button>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+                <h3 class="text-xl font-semibold mb-4">My Deliveries</h3>
+                <div id="customer-deliveries" class="space-y-4">
+                    <div class="text-center py-8">
+                        <i class="fas fa-truck-loading text-4xl text-gray-400 mb-2"></i>
+                        <p class="text-gray-500">No deliveries yet. Create your first delivery!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Create Delivery Page -->
+        <div id="create-delivery" class="page hidden">
+            <div class="max-w-3xl mx-auto bg-white rounded-lg shadow-md overflow-hidden">
+                <div class="gradient-bg py-4 px-6">
+                    <h2 class="text-2xl font-bold text-white">Create New Delivery</h2>
+                </div>
+                <div class="p-6">
+                    <form id="delivery-form">
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <h3 class="text-lg font-semibold mb-4 text-gray-800">Pickup Information</h3>
+                                <div class="mb-4">
+                                    <label for="pickup-address" class="block text-gray-700 font-medium mb-2">Address</label>
+                                    <input type="text" id="pickup-address" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500" required>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="pickup-contact" class="block text-gray-700 font-medium mb-2">Contact Name</label>
+                                    <input type="text" id="pickup-contact" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500" required>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="pickup-phone" class="block text-gray-700 font-medium mb-2">Contact Phone</label>
+                                    <input type="tel" id="pickup-phone" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500" required>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="pickup-instructions" class="block text-gray-700 font-medium mb-2">Special Instructions</label>
+                                    <textarea id="pickup-instructions" rows="2" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"></textarea>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold mb-4 text-gray-800">Drop-off Information</h3>
+                                <div class="mb-4">
+                                    <label for="dropoff-address" class="block text-gray-700 font-medium mb-2">Address</label>
+                                    <input type="text" id="dropoff-address" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500" required>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="dropoff-contact" class="block text-gray-700 font-medium mb-2">Contact Name</label>
+                                    <input type="text" id="dropoff-contact" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500" required>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="dropoff-phone" class="block text-gray-700 font-medium mb-2">Contact Phone</label>
+                                    <input type="tel" id="dropoff-phone" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500" required>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="dropoff-instructions" class="block text-gray-700 font-medium mb-2">Special Instructions</label>
+                                    <textarea id="dropoff-instructions" rows="2" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-6">
+                            <h3 class="text-lg font-semibold mb-4 text-gray-800">Package Details</h3>
+                            <div class="grid md:grid-cols-3 gap-4">
+                                <div class="mb-4">
+                                    <label for="package-type" class="block text-gray-700 font-medium mb-2">Type</label>
+                                    <select id="package-type" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500">
+                                        <option value="document">Document</option>
+                                        <option value="parcel">Parcel</option>
+                                        <option value="pallet">Pallet</option>
+                                        <option value="fragile">Fragile</option>
+                                        <option value="perishable">Perishable</option>
+                                    </select>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="package-weight" class="block text-gray-700 font-medium mb-2">Weight (lbs)</label>
+                                    <input type="number" id="package-weight" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500">
+                                </div>
+                                <div class="mb-4">
+                                    <label for="package-dimensions" class="block text-gray-700 font-medium mb-2">Dimensions (LxWxH in.)</label>
+                                    <input type="text" id="package-dimensions" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500" placeholder="e.g., 12x8x5">
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <label for="package-description" class="block text-gray-700 font-medium mb-2">Description</label>
+                                <textarea id="package-description" rows="3" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"></textarea>
+                            </div>
+                        </div>
+                        <div class="mt-6">
+                            <button type="submit" class="w-full bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-700 transition focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2">
+                                Continue to Choose Expeditor
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Choose Expeditor Page -->
+        <div id="choose-expeditor" class="page hidden">
+            <div class="max-w-6xl mx-auto">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold text-gray-800">Choose Your Expeditor</h2>
+                    <div class="text-gray-600">
+                        Delivery ID: <span id="current-delivery-id" class="font-semibold">#12345</span>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                    <div class="grid md:grid-cols-3 gap-6">
+                        <div class="md:col-span-2">
+                            <div class="map-placeholder rounded-lg h-64 flex items-center justify-center">
+                                <div class="text-center">
+                                    <i class="fas fa-map-marked-alt text-4xl text-gray-400 mb-2"></i>
+                                    <p class="text-gray-500">Map showing expeditors near your route</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold mb-4 text-gray-800">Delivery Summary</h3>
+                            <div class="space-y-3">
+                                <div>
+                                    <p class="text-sm text-gray-500">Pickup Location</p>
+                                    <p id="expeditor-pickup" class="font-medium">123 Main St, Anytown, USA</p>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-500">Drop-off Location</p>
+                                    <p id="expeditor-dropoff" class="font-medium">456 Oak Ave, Somewhere, USA</p>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-500">Package</p>
+                                    <p id="expeditor-package" class="font-medium">Document (1 lb)</p>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-500">Estimated Distance</p>
+                                    <p class="font-medium">15.3 miles</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h3 class="text-lg font-semibold mb-4 text-gray-800">Available Expeditor</h3>
+                    <div id="expeditor-list" class="space-y-4">
+                        <!-- Expeditors will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Track Delivery Page -->
+        <div id="track-delivery" class="page hidden">
+            <div class="max-w-4xl mx-auto">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold text-gray-800">Track Your Delivery</h2>
+                    <div class="text-gray-600">
+                        Delivery ID: <span id="tracking-delivery-id" class="font-semibold">#12345</span>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                    <div class="grid md:grid-cols-3 gap-6">
+                        <div class="md:col-span-2">
+                            <div class="map-placeholder rounded-lg h-64 flex items-center justify-center">
+                                <div class="text-center">
+                                    <i class="fas fa-truck text-4xl text-gray-400 mb-2"></i>
+                                    <p id="tracking-status-text" class="text-gray-700 font-medium">Expeditor is on the way</p>
+                                    <p id="tracking-estimated-time" class="text-sm text-gray-500">Estimated arrival: 25 minutes</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold mb-4 text-gray-800">Delivery Details</h3>
+                            <div class="space-y-3">
+                                <div>
+                                    <p class="text-sm text-gray-500">Expeditor</p>
+                                    <p id="tracking-expeditor" class="font-medium">John D. (Toyota Camry)</p>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-500">Contact</p>
+                                    <p id="tracking-expeditor-phone" class="font-medium">(555) 123-4567</p>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-500">Pickup Location</p>
+                                    <p id="tracking-pickup" class="font-medium">123 Main St, Anytown, USA</p>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-500">Drop-off Location</p>
+                                    <p id="tracking-dropoff" class="font-medium">456 Oak Ave, Somewhere, USA</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h3 class="text-lg font-semibold mb-4 text-gray-800">Delivery Status</h3>
+                    <div class="delivery-status pl-8">
+                        <div class="relative pb-8">
+                            <div class="flex items-center">
+                                <div class="rounded-full h-8 w-8 bg-green-100 flex items-center justify-center">
+                                    <i class="fas fa-check text-green-500"></i>
+                                </div>
+                                <div class="ml-4">
+                                    <p class="text-sm font-medium status-complete">Request created</p>
+                                    <p class="text-xs text-gray-500">Today, 10:15 AM</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="relative pb-8">
+                            <div class="flex items-center">
+                                <div class="rounded-full h-8 w-8 bg-green-100 flex items-center justify-center">
+                                    <i class="fas fa-check text-green-500"></i>
+                                </div>
+                                <div class="ml-4">
+                                    <p class="text-sm font-medium status-complete">Expeditor assigned</p>
+                                    <p class="text-xs text-gray-500">Today, 10:30 AM</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="relative pb-8">
+                            <div class="flex items-center">
+                                <div class="rounded-full h-8 w-8 bg-blue-100 flex items-center justify-center">
+                                    <i class="fas fa-truck text-blue-500"></i>
+                                </div>
+                                <div class="ml-4">
+                                    <p class="text-sm font-medium status-active">On the way to pickup</p>
+                                    <p class="text-xs text-gray-500">Today, 10:45 AM</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="relative pb-8">
+                            <div class="flex items-center">
+                                <div class="rounded-full h-8 w-8 bg-gray-100 flex items-center justify-center">
+                                    <i class="fas fa-box text-gray-400"></i>
+                                </div>
+                                <div class="ml-4">
+                                    <p class="text-sm font-medium status-pending">Package picked up</p>
+                                    <p class="text-xs text-gray-500">--</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="relative">
+                            <div class="flex items-center">
+                                <div class="rounded-full h-8 w-8 bg-gray-100 flex items-center justify-center">
+                                    <i class="fas fa-home text-gray-400"></i>
+                                </div>
+                                <div class="ml-4">
+                                    <p class="text-sm font-medium status-pending">Package delivered</p>
+                                    <p class="text-xs text-gray-500">--</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Expeditor Dashboard -->
+        <div id="expeditor-dashboard" class="page hidden">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-2xl font-bold text-gray-800">Expeditor Dashboard</h2>
+                <div class="flex space-x-4">
+                    <button onclick="showPage('expeditor-profile')" class="bg-gray-200 text-gray-800 px-4 py-2 rounded-md hover:bg-gray-300 transition">
+                        <i class="fas fa-user-cog mr-2"></i>Profile
+                    </button>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6 mb-8">
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h3 class="text-xl font-semibold mb-4 text-gray-800">Profile Summary</h3>
+                    <div class="flex items-center mb-4">
+                        <div class="bg-purple-100 text-purple-800 rounded-full h-12 w-12 flex items-center justify-center mr-4">
+                            <i class="fas fa-truck"></i>
+                        </div>
+                        <div>
+                            <p id="expeditor-name" class="font-medium">John Doe</p>
+                            <p id="expeditor-vehicle" class="text-sm text-gray-600">Toyota Camry • ABC123</p>
+                        </div>
+                    </div>
+                    <div class="space-y-2">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Service Area:</span>
+                            <span id="expeditor-service-area" class="font-medium">10001, 10002, 10003</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Completed Deliveries:</span>
+                            <span class="font-medium">24</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Rating:</span>
+                            <span class="font-medium">4.8 ★</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h3 class="text-xl font-semibold mb-4 text-gray-800">Quick Actions</h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <button onclick="loadExpeditorRequests()" class="bg-purple-100 text-purple-800 p-4 rounded-lg hover:bg-purple-200 transition flex flex-col items-center">
+                            <i class="fas fa-list-ul text-2xl mb-2"></i>
+                            <span>View Requests</span>
+                        </button>
+                        <button onclick="loadExpeditorDeliveries()" class="bg-blue-100 text-blue-800 p-4 rounded-lg hover:bg-blue-200 transition flex flex-col items-center">
+                            <i class="fas fa-truck-loading text-2xl mb-2"></i>
+                            <span>My Deliveries</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-xl font-semibold text-gray-800">Assigned Requests</h3>
+                    <button onclick="loadExpeditorRequests()" class="text-purple-600 hover:text-purple-800">
+                        <i class="fas fa-sync-alt"></i> Refresh
+                    </button>
+                </div>
+                <div id="expeditor-requests" class="space-y-4">
+                    <div class="text-center py-8">
+                        <i class="fas fa-inbox text-4xl text-gray-400 mb-2"></i>
+                        <p class="text-gray-500">No new requests at this time.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Expeditor Profile Page -->
+        <div id="expeditor-profile" class="page hidden">
+            <div class="max-w-3xl mx-auto bg-white rounded-lg shadow-md overflow-hidden">
+                <div class="gradient-bg py-4 px-6">
+                    <h2 class="text-2xl font-bold text-white">Expeditor Profile</h2>
+                </div>
+                <div class="p-6">
+                    <form id="expeditor-profile-form">
+                        <div class="mb-6">
+                            <h3 class="text-lg font-semibold mb-4 text-gray-800">Vehicle Information</h3>
+                            <div class="grid md:grid-cols-2 gap-4">
+                                <div class="mb-4">
+                                    <label for="profile-vehicle" class="block text-gray-700 font-medium mb-2">Vehicle Type</label>
+                                    <select id="profile-vehicle" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500">
+                                        <option value="sedan">Sedan</option>
+                                        <option value="suv">SUV</option>
+                                        <option value="pickup">Pickup Truck</option>
+                                        <option value="van">Van</option>
+                                        <option value="box_truck">Box Truck</option>
+                                    </select>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="profile-license" class="block text-gray-700 font-medium mb-2">License Number</label>
+                                    <input type="text" id="profile-license" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-6">
+                            <h3 class="text-lg font-semibold mb-4 text-gray-800">Service Information</h3>
+                            <div class="mb-4">
+                                <label for="profile-service-area" class="block text-gray-700 font-medium mb-2">Service Area (ZIP codes, comma separated)</label>
+                                <input type="text" id="profile-service-area" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500">
+                            </div>
+                        </div>
+                        <div class="flex justify-end">
+                            <button type="submit" class="bg-purple-600 text-white py-2 px-6 rounded-md hover:bg-purple-700 transition focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2">
+                                Save Profile
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Expeditor Requests Page -->
+        <div id="expeditor-requests-page" class="page hidden">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-800">Delivery Requests</h2>
+                <button onclick="loadExpeditorRequests()" class="text-purple-600 hover:text-purple-800">
+                    <i class="fas fa-sync-alt mr-2"></i>Refresh
+                </button>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <div id="expeditor-requests-list" class="space-y-4">
+                    <!-- Requests will be loaded here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Expeditor Deliveries Page -->
+        <div id="expeditor-deliveries-page" class="page hidden">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-800">My Deliveries</h2>
+                <div class="flex space-x-4">
+                    <button onclick="loadExpeditorDeliveries('active')" class="bg-purple-600 text-white px-4 py-1 rounded-md hover:bg-purple-700 transition">
+                        Active
+                    </button>
+                    <button onclick="loadExpeditorDeliveries('completed')" class="bg-gray-200 text-gray-800 px-4 py-1 rounded-md hover:bg-gray-300 transition">
+                        Completed
+                    </button>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <div id="expeditor-deliveries-list" class="space-y-4">
+                    <!-- Deliveries will be loaded here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Update Delivery Status Page -->
+        <div id="update-delivery-status" class="page hidden">
+            <div class="max-w-4xl mx-auto">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold text-gray-800">Update Delivery Status</h2>
+                    <div class="text-gray-600">
+                        Delivery ID: <span id="status-delivery-id" class="font-semibold">#12345</span>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <h3 class="text-lg font-semibold mb-4 text-gray-800">Delivery Information</h3>
+                            <div class="space-y-3">
+                                <div>
+                                    <p class="text-sm text-gray-500">Customer</p>
+                                    <p id="status-customer" class="font-medium">Jane Smith</p>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-500">Contact</p>
+                                    <p id="status-customer-phone" class="font-medium">(555) 987-6543</p>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-500">Pickup Location</p>
+                                    <p id="status-pickup" class="font-medium">123 Main St, Anytown, USA</p>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-500">Drop-off Location</p>
+                                    <p id="status-dropoff" class="font-medium">456 Oak Ave, Somewhere, USA</p>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-500">Package</p>
+                                    <p id="status-package" class="font-medium">Document (1 lb)</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold mb-4 text-gray-800">Current Status</h3>
+                            <div class="bg-gray-50 p-4 rounded-lg mb-4">
+                                <p class="text-sm text-gray-500 mb-1">Status</p>
+                                <p id="current-status" class="text-lg font-bold text-purple-600">On the way to pickup</p>
+                            </div>
+                            <h3 class="text-lg font-semibold mb-4 text-gray-800">Update Status</h3>
+                            <div class="space-y-2">
+                                <button onclick="updateDeliveryStatus('picked_up')" class="w-full bg-blue-100 text-blue-800 py-2 px-4 rounded-md hover:bg-blue-200 transition text-left flex items-center">
+                                    <i class="fas fa-box-open mr-3"></i> Mark as Picked Up
+                                </button>
+                                <button onclick="updateDeliveryStatus('in_progress')" class="w-full bg-green-100 text-green-800 py-2 px-4 rounded-md hover:bg-green-200 transition text-left flex items-center">
+                                    <i class="fas fa-truck mr-3"></i> Mark as On the Way
+                                </button>
+                                <button onclick="updateDeliveryStatus('delivered')" class="w-full bg-purple-100 text-purple-800 py-2 px-4 rounded-md hover:bg-purple-200 transition text-left flex items-center">
+                                    <i class="fas fa-check-circle mr-3"></i> Mark as Delivered
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="gradient-bg text-white py-8">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <div class="flex items-center space-x-2">
+                        <i class="fas fa-ghost text-2xl"></i>
+                        <span class="text-xl font-bold">Ghost-Riders Expediting</span>
+                    </div>
+                    <p class="mt-2 text-purple-200">Fast, reliable expedited shipping solutions</p>
+                </div>
+                <div class="flex space-x-6">
+                    <a href="#" class="hover:text-purple-200"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="hover:text-purple-200"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="hover:text-purple-200"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="hover:text-purple-200"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            <div class="border-t border-purple-500 mt-6 pt-6 text-center text-purple-200 text-sm">
+                <p>&copy; 2023 Ghost-Riders Expediting. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Global variables
+        let currentUser = null;
+        let currentDeliveryId = null;
+        let trackingInterval = null;
+
+        // DOM Ready
+        document.addEventListener('DOMContentLoaded', function() {
+            // Show home page by default
+            showPage('home');
+            
+            // Mobile menu toggle
+            document.getElementById('mobile-menu-button').addEventListener('click', function() {
+                const menu = document.getElementById('mobile-menu');
+                menu.classList.toggle('hidden');
+            });
+            
+            // Register form toggle for expeditor fields
+            const roleRadios = document.querySelectorAll('input[name="register-role"]');
+            roleRadios.forEach(radio => {
+                radio.addEventListener('change', function() {
+                    const expeditorFields = document.getElementById('expeditor-fields');
+                    if (this.value === 'expeditor') {
+                        expeditorFields.classList.remove('hidden');
+                    } else {
+                        expeditorFields.classList.add('hidden');
+                    }
+                });
+            });
+            
+            // Form submissions
+            document.getElementById('register-form').addEventListener('submit', handleRegister);
+            document.getElementById('login-form').addEventListener('submit', handleLogin);
+            document.getElementById('delivery-form').addEventListener('submit', handleCreateDelivery);
+            document.getElementById('expeditor-profile-form').addEventListener('submit', handleExpeditorProfile);
+            
+            // Check if user is already logged in
+            checkAuthStatus();
+        });
+        
+        // Page navigation
+        function showPage(pageId) {
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.add('hidden');
+            });
+            
+            // Show the requested page
+            document.getElementById(pageId + '-page').classList.remove('hidden');
+            
+            // Special cases
+            if (pageId === 'customer-dashboard') {
+                loadCustomerDeliveries();
+            } else if (pageId === 'expeditor-dashboard') {
+                loadExpeditorRequests();
+            } else if (pageId === 'expeditor-requests-page') {
+                loadExpeditorRequests();
+            } else if (pageId === 'expeditor-deliveries-page') {
+                loadExpeditorDeliveries();
+            }
+        }
+        
+        // Authentication functions
+        function checkAuthStatus() {
+            const token = localStorage.getItem('authToken');
+            if (token) {
+                // In a real app, you'd validate the token with the backend
+                const user = JSON.parse(localStorage.getItem('user'));
+                if (user) {
+                    currentUser = user;
+                    updateNavForUser(user);
+                    
+                    // Redirect to appropriate dashboard
+                    if (user.role === 'customer') {
+                        showPage('customer-dashboard');
+                    } else if (user.role === 'expeditor') {
+                        showPage('expeditor-dashboard');
+                    }
+                }
+            }
+        }
+        
+        function updateNavForUser(user) {
+            document.getElementById('nav-links').classList.add('hidden');
+            document.getElementById('user-nav').classList.remove('hidden');
+            document.getElementById('username-display').textContent = user.name;
+            
+            // Update mobile menu
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.innerHTML = `
+                <div class="flex flex-col space-y-2">
+                    <a href="#" class="text-white hover:bg-purple-800 px-3 py-2 rounded" onclick="showPage('${user.role === 'customer' ? 'customer-dashboard' : 'expeditor-dashboard'}')">Dashboard</a>
+                    <a href="#" class="text-white hover:bg-purple-800 px-3 py-2 rounded" onclick="logout()">Logout</a>
+                </div>
+            `;
+        }
+        
+        function logout() {
+            localStorage.removeItem('authToken');
+            localStorage.removeItem('user');
+            currentUser = null;
+            
+            // Reset navigation
+            document.getElementById('nav-links').classList.remove('hidden');
+            document.getElementById('user-nav').classList.add('hidden');
+            
+            // Show home page
+            showPage('home');
+            
+            // Clear any tracking intervals
+            if (trackingInterval) {
+                clearInterval(trackingInterval);
+                trackingInterval = null;
+            }
+        }
+        
+        // API call functions
+        async function makeApiRequest(url, method, data = null, requiresAuth = true) {
+            const headers = {
+                'Content-Type': 'application/json'
+            };
+            
+            if (requiresAuth) {
+                const token = localStorage.getItem('authToken');
+                if (!token) {
+                    throw new Error('Authentication required');
+                }
+                headers['Authorization'] = `Bearer ${token}`;
+            }
+            
+            const options = {
+                method: method,
+                headers: headers
+            };
+            
+            if (data) {
+                options.body = JSON.stringify(data);
+            }
+            
+            try {
+                const response = await fetch(url, options);
+                const responseData = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(responseData.message || 'Request failed');
+                }
+                
+                return responseData;
+            } catch (error) {
+                console.error('API request failed:', error);
+                alert(`Error: ${error.message}`);
+                throw error;
+            }
+        }
+        
+        // Form handlers
+        async function handleRegister(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('register-name').value;
+            const email = document.getElementById('register-email').value;
+            const phone = document.getElementById('register-phone').value;
+            const password = document.getElementById('register-password').value;
+            const role = document.querySelector('input[name="register-role"]:checked').value;
+            
+            const data = {
+                name,
+                email,
+                phone,
+                password,
+                role
+            };
+            
+            if (role === 'expeditor') {
+                data.vehicle_type = document.getElementById('register-vehicle').value;
+                data.license_number = document.getElementById('register-license').value;
+                data.service_area = document.getElementById('register-service-area').value;
+            }
+            
+            try {
+                const response = await makeApiRequest('/api/register', 'POST', data, false);
+                alert('Registration successful! Please login.');
+                showPage('login');
+            } catch (error) {
+                console.error('Registration failed:', error);
+            }
+        }
+        
+        async function handleLogin(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            
+            try {
+                const response = await makeApiRequest('/api/login', 'POST', { email, password }, false);
+                
+                // Store token and user data
+                localStorage.setItem('authToken', response.token);
+                localStorage.setItem('user', JSON.stringify(response.user));
+                currentUser = response.user;
+                
+                // Update UI
+                updateNavForUser(response.user);
+                
+                // Redirect to appropriate dashboard
+                if (response.user.role === 'customer') {
+                    showPage('customer-dashboard');
+                } else if (response.user.role === 'expeditor') {
+                    showPage('expeditor-dashboard');
+                }
+            } catch (error) {
+                console.error('Login failed:', error);
+            }
+        }
+        
+        async function handleCreateDelivery(e) {
+            e.preventDefault();
+            
+            const pickupAddress = document.getElementById('pickup-address').value;
+            const pickupContact = document.getElementById('pickup-contact').value;
+            const pickupPhone = document.getElementById('pickup-phone').value;
+            const pickupInstructions = document.getElementById('pickup-instructions').value;
+            
+            const dropoffAddress = document.getElementById('dropoff-address').value;
+            const dropoffContact = document.getElementById('dropoff-contact').value;
+            const dropoffPhone = document.getElementById('dropoff-phone').value;
+            const dropoffInstructions = document.getElementById('dropoff-instructions').value;
+            
+            const packageType = document.getElementById('package-type').value;
+            const packageWeight = document.getElementById('package-weight').value;
+            const packageDimensions = document.getElementById('package-dimensions').value;
+            const packageDescription = document.getElementById('package-description').value;
+            
+            const data = {
+                customer_id: currentUser.id,
+                pickup_location: pickupAddress,
+                pickup_contact: pickupContact,
+                pickup_phone: pickupPhone,
+                pickup_instructions: pickupInstructions,
+                dropoff_location: dropoffAddress,
+                dropoff_contact: dropoffContact,
+                dropoff_phone: dropoffPhone,
+                dropoff_instructions: dropoffInstructions,
+                package_type: packageType,
+                package_weight: packageWeight,
+                package_dimensions: packageDimensions,
+                package_description: packageDescription,
+                status: 'pending'
+            };
+            
+            try {
+                const response = await makeApiRequest('/api/delivery', 'POST', data);
+                currentDeliveryId = response.delivery_id;
+                
+                // Update the choose expeditor page with delivery info
+                document.getElementById('expeditor-pickup').textContent = pickupAddress;
+                document.getElementById('expeditor-dropoff').textContent = dropoffAddress;
+                document.getElementById('expeditor-package').textContent = `${packageType} (${packageWeight} lb)`;
+                document.getElementById('current-delivery-id').textContent = `#${currentDeliveryId}`;
+                
+                // Load available expeditors
+                loadExpeditors();
+                
+                // Show choose expeditor page
+                showPage('choose-expeditor');
+            } catch (error) {
+                console.error('Delivery creation failed:', error);
+            }
+        }
+        
+        async function handleExpeditorProfile(e) {
+            e.preventDefault();
+            
+            const vehicleType = document.getElementById('profile-vehicle').value;
+            const licenseNumber = document.getElementById('profile-license').value;
+            const serviceArea = document.getElementById('profile-service-area').value;
+            
+            const data = {
+                expeditor_id: currentUser.id,
+                vehicle_type: vehicleType,
+                license_number: licenseNumber,
+                service_area: serviceArea
+            };
+            
+            try {
+                const response = await makeApiRequest('/api/profile', 'POST', data);
+                alert('Profile updated successfully!');
+                
+                // Update current user data
+                currentUser.vehicle_type = vehicleType;
+                currentUser.license_number = licenseNumber;
+                currentUser.service_area = serviceArea;
+                localStorage.setItem('user', JSON.stringify(currentUser));
+                
+                // Update dashboard display
+                if (document.getElementById('expeditor-name')) {
+                    document.getElementById('expeditor-name').textContent = currentUser.name;
+                    document.getElementById('expeditor-vehicle').textContent = `${vehicleType} • ${licenseNumber}`;
+                    document.getElementById('expeditor-service-area').textContent = serviceArea;
+                }
+                
+                // Go back to dashboard
+                showPage('expeditor-dashboard');
+            } catch (error) {
+                console.error('Profile update failed:', error);
+            }
+        }
+        
+        // Data loading functions
+async function loadCustomerDeliveries() {
+  console.log('loadCustomerDeliveries called, currentUser:', currentUser);
+  if (!currentUser || !currentUser.id) {
+    console.error('No currentUser or user ID');
+    alert('Error: User not authenticated. Please log in again.');
+    showPage('login');
+    return;
+  }
+  try {
+    console.log('Fetching deliveries for user ID:', currentUser.id);
+    const response = await makeApiRequest(`/api/my-deliveries/${currentUser.id}`, 'GET');
+    console.log('API response:', response);
+    const deliveriesContainer = document.getElementById('customer-deliveries');
+    if (!deliveriesContainer) {
+      console.error('customer-deliveries div not found');
+      return;
+    }
+    if (response.deliveries && response.deliveries.length > 0) {
+      deliveriesContainer.innerHTML = '';
+      response.deliveries.forEach(delivery => {
+        console.log('Rendering delivery:', delivery);
+        const deliveryElement = document.createElement('div');
+        deliveryElement.className = 'bg-gray-50 rounded-lg p-4 hover:bg-gray-100 transition cursor-pointer';
+        deliveryElement.onclick = () => {
+          currentDeliveryId = delivery.id;
+          setupTrackingPage(delivery);
+          showPage('track-delivery');
+        };
+        const statusColor = delivery.status === 'delivered' ? 'bg-green-100 text-green-800' :
+                           delivery.status === 'in_progress' ? 'bg-blue-100 text-blue-800' :
+                           'bg-yellow-100 text-yellow-800';
+        deliveryElement.innerHTML = `
+          <div class="flex justify-between items-start">
+            <div>
+              <h4 class="font-medium">${delivery.pickup_location} → ${delivery.dropoff_location}</h4>
+              <p class="text-sm text-gray-600">${delivery.package_type} • ${delivery.created_at}</p>
+            </div>
+            <span class="px-2 py-1 text-xs rounded-full ${statusColor}">${formatStatus(delivery.status)}</span>
+          </div>
+          <div class="mt-2 flex items-center text-sm text-gray-500">
+            <i class="fas fa-user mr-2"></i>
+            <span>${delivery.expeditor_name || 'Not assigned yet'}</span>
+          </div>
+        `;
+        deliveriesContainer.appendChild(deliveryElement);
+      });
+    } else {
+      console.log('No deliveries found, rendering placeholder');
+      deliveriesContainer.innerHTML = `
+        <div class="text-center py-8">
+          <i class="fas fa-truck-loading text-4xl text-gray-400 mb-2"></i>
+          <p class="text-gray-500">No deliveries yet. Create your first delivery!</p>
+        </div>
+      `;
+    }
+  } catch (error) {
+    console.error('Failed to load deliveries:', error);
+    alert('Error loading deliveries: ' + error.message);
+  }
+}
+        
+        async function loadExpeditors() {
+            try {
+                const response = await makeApiRequest('/api/expeditors', 'GET');
+                const expeditorsContainer = document.getElementById('expeditor-list');
+                
+                if (response.expeditors && response.expeditors.length > 0) {
+                    expeditorsContainer.innerHTML = '';
+                    
+                    response.expeditors.forEach(expeditor => {
+                        const expeditorElement = document.createElement('div');
+                        expeditorElement.className = 'bg-white border rounded-lg p-4 hover:border-purple-500 transition';
+                        
+                        expeditorElement.innerHTML = `
+                            <div class="flex items-start">
+                                <div class="bg-purple-100 text-purple-800 rounded-full h-10 w-10 flex items-center justify-center mr-4">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="flex justify-between items-start">
+                                        <div>
+                                            <h4 class="font-medium">${expeditor.name}</h4>
+                                            <p class="text-sm text-gray-600">${expeditor.vehicle_type} • ${expeditor.license_number}</p>
+                                        </div>
+                                        <span class="bg-green-100 text-green-800 px-2 py-1 text-xs rounded-full">Available</span>
+                                    </div>
+                                    <div class="mt-2">
+                                        <p class="text-sm text-gray-600"><i class="fas fa-map-marker-alt mr-1"></i> Service area: ${expeditor.service_area}</p>
+                                    </div>
+                                    <div class="mt-3 flex justify-end">
+                                        <button onclick="selectExpeditor(${expeditor.id}, event)" class="bg-purple-600 text-white px-4 py-1 rounded-md hover:bg-purple-700 transition">
+                                            Select
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                        
+                        expeditorsContainer.appendChild(expeditorElement);
+                    });
+                } else {
+                    expeditorsContainer.innerHTML = `
+                        <div class="text-center py-8">
+                            <i class="fas fa-user-slash text-4xl text-gray-400 mb-2"></i>
+                            <p class="text-gray-500">No expeditors available at this time.</p>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('Failed to load expeditors:', error);
+            }
+        }
+        
+        async function loadExpeditorRequests() {
+            try {
+                const response = await makeApiRequest(`/api/requests/${currentUser.id}`, 'GET');
+                const requestsContainer = document.getElementById('expeditor-requests-list') || 
+                                         document.getElementById('expeditor-requests');
+                
+                if (response.requests && response.requests.length > 0) {
+                    let html = '';
+                    
+                    response.requests.forEach(request => {
+                        html += `
+                            <div class="bg-white border rounded-lg p-4 hover:shadow-md transition">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h4 class="font-medium">${request.pickup_location} → ${request.dropoff_location}</h4>
+                                    <span class="text-sm text-gray-500">${request.created_at}</span>
+                                </div>
+                                <p class="text-sm text-gray-600 mb-3">${request.package_type} • ${request.package_weight} lbs</p>
+                                <div class="flex justify-between items-center">
+                                    <div>
+                                        <p class="text-sm"><i class="fas fa-user mr-1"></i> ${request.customer_name}</p>
+                                        <p class="text-sm"><i class="fas fa-phone mr-1"></i> ${request.customer_phone}</p>
+                                    </div>
+                                    <div class="flex space-x-2">
+                                        <button onclick="acceptDeliveryRequest(${request.id})" class="bg-green-600 text-white px-3 py-1 rounded-md hover:bg-green-700 transition">
+                                            Accept
+                                        </button>
+                                        <button onclick="declineDeliveryRequest(${request.id})" class="bg-red-600 text-white px-3 py-1 rounded-md hover:bg-red-700 transition">
+                                            Decline
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    
+                    requestsContainer.innerHTML = html;
+                } else {
+                    requestsContainer.innerHTML = `
+                        <div class="text-center py-8">
+                            <i class="fas fa-inbox text-4xl text-gray-400 mb-2"></i>
+                            <p class="text-gray-500">No new requests at this time.</p>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('Failed to load expeditor requests:', error);
+            }
+        }
+        
+        async function loadExpeditorDeliveries(filter = 'active') {
+            try {
+                // This would normally come from the API
+                // For demo purposes, we'll use mock data
+                const mockDeliveries = [
+                    {
+                        id: 101,
+                        customer_name: "Jane Smith",
+                        customer_phone: "(555) 987-6543",
+                        pickup_location: "123 Main St, Anytown, USA",
+                        dropoff_location: "456 Oak Ave, Somewhere, USA",
+                        package_type: "Document",
+                        package_weight: 1,
+                        status: "in_progress",
+                        created_at: "Today, 10:15 AM"
+                    },
+                    {
+                        id: 102,
+                        customer_name: "Robert Johnson",
+                        customer_phone: "(555) 456-7890",
+                        pickup_location: "789 Pine Rd, Othertown, USA",
+                        dropoff_location: "321 Elm Blvd, Anotherplace, USA",
+                        package_type: "Parcel",
+                        package_weight: 5,
+                        status: "picked_up",
+                        created_at: "Yesterday, 2:30 PM"
+                    },
+                    {
+                        id: 103,
+                        customer_name: "Sarah Williams",
+                        customer_phone: "(555) 789-0123",
+                        pickup_location: "654 Cedar Ln, Somewhere, USA",
+                        dropoff_location: "987 Birch St, Anytown, USA",
+                        package_type: "Fragile",
+                        package_weight: 3,
+                        status: "delivered",
+                        created_at: "2 days ago"
+                    }
+                ];
+                
+                // Filter deliveries based on the selected filter
+                const filteredDeliveries = mockDeliveries.filter(delivery => {
+                    if (filter === 'active') {
+                        return delivery.status !== 'delivered';
+                    } else {
+                        return delivery.status === 'delivered';
+                    }
+                });
+                
+                const deliveriesContainer = document.getElementById('expeditor-deliveries-list') || 
+                                          document.getElementById('expeditor-deliveries');
+                
+                if (filteredDeliveries.length > 0) {
+                    let html = '';
+                    
+                    filteredDeliveries.forEach(delivery => {
+                        const statusColor = delivery.status === 'delivered' ? 'bg-green-100 text-green-800' : 
+                                          delivery.status === 'in_progress' ? 'bg-blue-100 text-blue-800' :
+                                          'bg-yellow-100 text-yellow-800';
+                        
+                        html += `
+                            <div class="bg-white border rounded-lg p-4 hover:shadow-md transition">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h4 class="font-medium">${delivery.pickup_location} → ${delivery.dropoff_location}</h4>
+                                    <span class="text-sm text-gray-500">${delivery.created_at}</span>
+                                </div>
+                                <div class="flex justify-between items-center mb-3">
+                                    <p class="text-sm text-gray-600">${delivery.package_type} • ${delivery.package_weight} lbs</p>
+                                    <span class="px-2 py-1 text-xs rounded-full ${statusColor}">${formatStatus(delivery.status)}</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <div>
+                                        <p class="text-sm"><i class="fas fa-user mr-1"></i> ${delivery.customer_name}</p>
+                                        <p class="text-sm"><i class="fas fa-phone mr-1"></i> ${delivery.customer_phone}</p>
+                                    </div>
+                                    ${delivery.status !== 'delivered' ? `
+                                    <button onclick="updateDeliveryStatusPage(${delivery.id})" class="bg-purple-600 text-white px-3 py-1 rounded-md hover:bg-purple-700 transition">
+                                        Update Status
+                                    </button>
+                                    ` : ''}
+                                </div>
+                            </div>
+                        `;
+                    });
+                    
+                    deliveriesContainer.innerHTML = html;
+                } else {
+                    deliveriesContainer.innerHTML = `
+                        <div class="text-center py-8">
+                            <i class="fas fa-${filter === 'active' ? 'truck-loading' : 'clipboard-check'} text-4xl text-gray-400 mb-2"></i>
+                            <p class="text-gray-500">No ${filter === 'active' ? 'active' : 'completed'} deliveries at this time.</p>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('Failed to load expeditor deliveries:', error);
+            }
+        }
+        
+        // Action functions
+        async function selectExpeditor(expeditorId, event) {
+            event.stopPropagation();
+            
+            try {
+                const response = await makeApiRequest(`/api/delivery/${currentDeliveryId}/choose-expeditor`, 'PUT', { expeditor_id: expeditorId });
+                alert('Expeditor assigned successfully!');
+                
+                // Setup and show tracking page
+                setupTrackingPage({
+                    id: currentDeliveryId,
+                    expeditor_name: "John D.", // This would come from the API response
+                    expeditor_phone: "(555) 123-4567",
+                    pickup_location: document.getElementById('expeditor-pickup').textContent,
+                    dropoff_location: document.getElementById('expeditor-dropoff').textContent,
+                    package_type: document.getElementById('expeditor-package').textContent.split(' ')[0],
+                    status: 'pending'
+                });
+                
+                showPage('track-delivery');
+            } catch (error) {
+                console.error('Failed to assign expeditor:', error);
+            }
+        }
+        
+        async function acceptDeliveryRequest(deliveryId) {
+            try {
+                const response = await makeApiRequest(`/api/delivery/${deliveryId}/accept`, 'PUT');
+                alert('Delivery request accepted!');
+                loadExpeditorRequests();
+            } catch (error) {
+                console.error('Failed to accept delivery request:', error);
+            }
+        }
+        
+        function declineDeliveryRequest(deliveryId) {
+            // This would be optional for MVP as per requirements
+            alert('Delivery request declined.');
+            loadExpeditorRequests();
+        }
+        
+        function setupTrackingPage(delivery) {
+            document.getElementById('tracking-delivery-id').textContent = `#${delivery.id}`;
+            document.getElementById('tracking-expeditor').textContent = `${delivery.expeditor_name || 'Not assigned yet'}`;
+            document.getElementById('tracking-expeditor-phone').textContent = delivery.expeditor_phone || '--';
+            document.getElementById('tracking-pickup').textContent = delivery.pickup_location;
+            document.getElementById('tracking-dropoff').textContent = delivery.dropoff_location;
+            document.getElementById('tracking-package').textContent = `${delivery.package_type} (${delivery.package_weight || '?'} lb)`;
+            
+            // Update status text
+            const statusText = document.getElementById('tracking-status-text');
+            if (delivery.status === 'pending') {
+                statusText.textContent = 'Waiting for expeditor to accept';
+            } else if (delivery.status === 'accepted') {
+                statusText.textContent = 'Expeditor on the way to pickup';
+            } else if (delivery.status === 'picked_up') {
+                statusText.textContent = 'Package picked up - on the way';
+            } else if (delivery.status === 'delivered') {
+                statusText.textContent = 'Package delivered';
+            }
+            
+            // Start polling for status updates
+            if (trackingInterval) {
+                clearInterval(trackingInterval);
+            }
+            
+            trackingInterval = setInterval(() => {
+                // In a real app, this would call the API to check for status updates
+                console.log('Polling for delivery status updates...');
+            }, 30000); // Poll every 30 seconds
+        }
+        
+        function updateDeliveryStatusPage(deliveryId) {
+            // This would normally fetch delivery details from the API
+            // For demo purposes, we'll use mock data
+            const mockDelivery = {
+                id: deliveryId,
+                customer_name: "Jane Smith",
+                customer_phone: "(555) 987-6543",
+                pickup_location: "123 Main St, Anytown, USA",
+                dropoff_location: "456 Oak Ave, Somewhere, USA",
+                package_type: "Document",
+                package_weight: 1,
+                status: "in_progress"
+            };
+            
+            document.getElementById('status-delivery-id').textContent = `#${deliveryId}`;
+            document.getElementById('status-customer').textContent = mockDelivery.customer_name;
+            document.getElementById('status-customer-phone').textContent = mockDelivery.customer_phone;
+            document.getElementById('status-pickup').textContent = mockDelivery.pickup_location;
+            document.getElementById('status-dropoff').textContent = mockDelivery.dropoff_location;
+            document.getElementById('status-package').textContent = `${mockDelivery.package_type} (${mockDelivery.package_weight} lb)`;
+            document.getElementById('current-status').textContent = formatStatus(mockDelivery.status);
+            
+            currentDeliveryId = deliveryId;
+            showPage('update-delivery-status');
+        }
+        
+        async function updateDeliveryStatus(status) {
+            try {
+                const response = await makeApiRequest(`/api/delivery/${currentDeliveryId}/status`, 'PUT', { status });
+                alert('Delivery status updated successfully!');
+                
+                // Go back to deliveries page
+                showPage('expeditor-deliveries-page');
+            } catch (error) {
+                console.error('Failed to update delivery status:', error);
+            }
+        }
+        
+        // Helper functions
+        function formatStatus(status) {
+            const statusMap = {
+                'pending': 'Pending',
+                'accepted': 'Accepted',
+                'picked_up': 'Picked Up',
+                'in_progress': 'In Progress',
+                'delivered': 'Delivered'
+            };
+            
+            return statusMap[status] || status;
+        }
+    </script>
+</body>
+</html>
