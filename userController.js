@@ -1,4 +1,4 @@
-const User = require('../models/User');
+const User = require('./User');
 
 const updateProfile = async (req, res) => {
   const { vehicle_type, license_number, service_area } = req.body;

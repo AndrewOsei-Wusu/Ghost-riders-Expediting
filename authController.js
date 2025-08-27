@@ -1,4 +1,4 @@
-const User = require('../models/User');
+const User = require('./User');
 const jwt = require('jsonwebtoken');
 
 const register = async (req, res) => {
@@ -16,7 +16,7 @@ const register = async (req, res) => {
     await user.save();
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '30d' });
-    res.status(201).json({ token, user: { id: user._id, name, role, email, phone, vehicle_type, license_number, service_area } });
+    res.status(201).json({ token, user: { id: user._id, name: user.name, role: user.role, email: user.email, phone: user.phone, vehicle_type: user.vehicle_type, license_number: user.license_number, service_area: user.service_area } });
   } catch (err) {
     res.status(500).json({ message: 'Server error' });
   }
